@@ -32,6 +32,7 @@ type Incident struct {
 	CreatedAt            string            `json:"created_at,omitempty"`
 	PendingActions       []PendingAction   `json:"pending_actions,omitempty"`
 	IncidentKey          string            `json:"incident_key,omitempty"`
+	Title                string            `json:"title,omitempty"`
 	Service              APIObject         `json:"service,omitempty"`
 	Assignments          []Assignment      `json:"assignments,omitempty"`
 	Acknowledgements     []Acknowledgement `json:"acknowledgements,omitempty"`
