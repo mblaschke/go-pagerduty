@@ -3,7 +3,6 @@ package pagerduty
 import (
 	"fmt"
 	"net/http"
-
 	"github.com/google/go-querystring/query"
 )
 
@@ -163,6 +162,12 @@ type ListOverridesOptions struct {
 	Overflow bool   `url:"overflow,omitempty"`
 }
 
+// ListOverrideResponse is the response structure when calling the ListOverrides API endpoint.
+type ListOverrideResponse struct {
+	APIListObject
+	Overrides []Override `json:"overrides,omitempty"`
+}
+
 // Overrides are any schedule layers from the override layer.
 type Override struct {
 	ID    string    `json:"id,omitempty"`
@@ -172,24 +177,20 @@ type Override struct {
 }
 
 // ListOverrides lists overrides for a given time range.
-func (c *Client) ListOverrides(id string, o ListOverridesOptions) ([]Override, error) {
+func (c *Client) ListOverrides(id string, o ListOverridesOptions) (ListOverrideResponse, error) {
+	var result ListOverrideResponse
 	v, err := query.Values(o)
 	if err != nil {
-		return nil, err
+		return result, err
 	}
 	resp, err := c.get("/schedules/" + id + "/overrides?" + v.Encode())
 	if err != nil {
-		return nil, err
+		return result, err
 	}
-	var result map[string][]Override
 	if err := c.decodeJSON(resp, &result); err != nil {
-		return nil, err
+		return result, err
 	}
-	overrides, ok := result["overrides"]
-	if !ok {
-		return nil, fmt.Errorf("JSON response does not have overrides field")
-	}
-	return overrides, nil
+	return result, nil
 }
 
 // CreateOverride creates an override for a specific user covering the specified time range.
