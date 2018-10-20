@@ -43,6 +43,7 @@ type Incident struct {
 	Urgency              string            `json:"urgency,omitempty"`
 	Status               string            `json:"status,omitempty"`
 	Id                   string            `json:"id,omitempty"`
+	Title                string            `json:"title,omitempty"`
 	Priority             APIObject         `json:"priority,omitempty"`
 }
 
